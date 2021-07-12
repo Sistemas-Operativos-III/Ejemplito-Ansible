@@ -1,0 +1,41 @@
+---
+- name: Instalacion de MySQL
+  hosts: mysql
+
+  tasks:
+  - name: Agregar repositorio de MySQL
+    yum:
+      name: 
+        - https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+      state: latest
+
+  - name: Instalar MySQL
+    yum:
+      name: 
+        - mysql-community-server
+      state: latest
+
+  - name: Apagar el mugroso firewalld
+    systemd:
+      name: firewalld 
+      state: stopped
+      enabled: no
+
+  - name: Activar el servicio MySQL
+    systemd:
+      name: mysqld
+      state: started
+      enabled: yes
+
+  - name: Mostrar password generado
+    shell: 'cat /var/log/mysqld.log | grep password'
+    register: password_generado
+
+  - debug: 
+      var: password_generado.stdout_lines
+
+
+
+
+
+

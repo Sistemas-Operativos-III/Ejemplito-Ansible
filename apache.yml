@@ -1,0 +1,28 @@
+---
+- name: Nombre Playbook
+  hosts: all
+
+  tasks:
+  - name: Instalar Apache y PHP 
+    yum:
+      name: 
+        - httpd
+        - php
+        - php-mysql
+        - iptables-services
+
+      state: latest
+
+  - name: Apagar el mugroso firewalld
+    systemd:
+      name: firewalld 
+      state: stopped
+      enabled: no
+
+  - name: Activar el servicio Apache 
+    systemd:
+      name: httpd
+      state: started
+      enabled: yes
+  become: true
+  become_user: root

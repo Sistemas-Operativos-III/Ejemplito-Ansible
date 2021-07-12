@@ -1,0 +1,22 @@
+---
+- name: Instalacion de MariaDB
+  hosts: db
+
+  tasks:
+  - name: Instalar Mariadb
+    yum:
+      name: 
+        - mariadb-server
+      state: latest
+
+  - name: Apagar el mugroso firewalld
+    systemd:
+      name: firewalld 
+      state: stopped
+      enabled: no
+
+  - name: Activar el servicio MariaDB
+    systemd:
+      name: mariadb
+      state: started
+      enabled: yes
